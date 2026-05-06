@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Naomi Kalala — Portfolio</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Raleway:wght@200;300;400;500&family=Great+Vibes&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --noir: #0a0908;
+    --noir-soft: #111010;
+    --or: #c9a84c;
+    --or-light: #e2c27a;
+    --or-pale: #f0dfa0;
+    --creme: #f5efe0;
+    --creme-dark: #e8dfc8;
+    --gris: #3a3530;
+    --texte: #d4c9b0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--noir);
+    color: var(--texte);
+    font-family: 'Raleway', sans-serif;
+    font-weight: 300;
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  /* CURSEUR PERSONNALISÉ */
+  #cursor {
+    width: 12px; height: 12px;
+    background: var(--or);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: difference;
+  }
+  #cursor-ring {
+    width: 36px; height: 36px;
+    border: 1px solid var(--or);
+    border-radius: 50%;
+    position: fixed;
+    pointer-events: none;
+    z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.12s ease-out, width 0.3s, height 0.3s, opacity 0.2s;
+    opacity: 0.6;
+  }
+  body:hover #cursor { opacity: 1; }
+  .cursor-hover { width: 48px !important; height: 48px !important; opacity: 0.3 !important; }
+
+  /* GRAIN OVERLAY */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9990;
+    opacity: 0.35;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 4rem;
+    background: linear-gradient(to bottom, rgba(10,9,8,0.95), transparent);
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 300;
+    letter-spacing: 0.25em;
+    color: var(--or);
+    text-transform: uppercase;
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 3rem;
+    list-style: none;
+  }
+  .nav-links a {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--texte);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  .nav-links a:hover { color: var(--or); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 0 4rem 6rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 70% 50%, rgba(201,168,76,0.06) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 20% 80%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  }
+  .hero-line {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 35%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, var(--or), transparent);
+    opacity: 0.4;
+    transform: translateY(-50%);
+  }
+  .hero-subtitle {
+    font-size: 0.65rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 1.5rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.3s forwards;
+  }
+  .hero-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(4rem, 10vw, 9rem);
+    font-weight: 300;
+    line-height: 0.9;
+    color: var(--creme);
+    margin-bottom: 2rem;
+    opacity: 0;
+    animation: fadeUp 1s 0.5s forwards;
+  }
+  .hero-title em {
+    font-style: italic;
+    color: var(--or-light);
+  }
+  .hero-desc {
+    max-width: 400px;
+    font-size: 0.8rem;
+    line-height: 1.9;
+    color: var(--texte);
+    opacity: 0;
+    animation: fadeUp 1s 0.8s forwards;
+    margin-left: 2px;
+  }
+  .hero-scroll {
+    position: absolute;
+    right: 4rem;
+    bottom: 4rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    opacity: 0;
+    animation: fadeUp 1s 1.2s forwards;
+  }
+  .hero-scroll span {
+    font-size: 0.6rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--or);
+    writing-mode: vertical-rl;
+  }
+  .scroll-line {
+    width: 1px;
+    height: 60px;
+    background: linear-gradient(to bottom, var(--or), transparent);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  /* SECTION PROJETS */
+  .projects-section {
+    padding: 8rem 0;
+    position: relative;
+  }
+  .section-header {
+    padding: 0 4rem;
+    display: flex;
+    align-items: baseline;
+    gap: 2rem;
+    margin-bottom: 5rem;
+  }
+  .section-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--or);
+  }
+  .section-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3.5rem;
+    font-weight: 300;
+    color: var(--creme);
+    line-height: 1;
+  }
+  .section-line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, rgba(201,168,76,0.4), transparent);
+    margin-left: 1rem;
+  }
+
+  /* GRILLE ASYMÉTRIQUE */
+  .projects-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-auto-rows: 100px;
+    gap: 16px;
+    padding: 0 4rem;
+  }
+
+  .project-card {
+    position: relative;
+    overflow: hidden;
+    background: var(--noir-soft);
+    border: 1px solid rgba(201,168,76,0.12);
+    cursor: none;
+    transition: border-color 0.4s;
+  }
+  .project-card:hover {
+    border-color: rgba(201,168,76,0.5);
+  }
+
+  /* Disposition asymétrique */
+  .project-card:nth-child(1) { grid-column: 1 / 8; grid-row: 1 / 7; }
+  .project-card:nth-child(2) { grid-column: 8 / 13; grid-row: 1 / 5; }
+  .project-card:nth-child(3) { grid-column: 8 / 10; grid-row: 5 / 9; }
+  .project-card:nth-child(4) { grid-column: 10 / 13; grid-row: 5 / 9; }
+  .project-card:nth-child(5) { grid-column: 1 / 5; grid-row: 8 / 12; }
+  .project-card:nth-child(6) { grid-column: 5 / 13; grid-row: 8 / 12; }
+
+  .card-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    transition: transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.4s;
+    opacity: 0.55;
+  }
+  .project-card:hover .card-bg {
+    transform: scale(1.06);
+    opacity: 0.75;
+  }
+
+  .card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(10,9,8,0.95) 0%, rgba(10,9,8,0.3) 60%, transparent 100%);
+    transition: background 0.4s;
+  }
+  .project-card:hover .card-overlay {
+    background: linear-gradient(to top, rgba(10,9,8,0.97) 0%, rgba(10,9,8,0.5) 70%, rgba(10,9,8,0.1) 100%);
+  }
+
+  .card-content {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    transform: translateY(0);
+    transition: transform 0.4s;
+  }
+
+  .card-num {
+    font-size: 0.55rem;
+    letter-spacing: 0.3em;
+    color: var(--or);
+    margin-bottom: 0.5rem;
+  }
+  .card-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.5rem;
+    font-weight: 400;
+    color: var(--creme);
+    line-height: 1.1;
+    margin-bottom: 0.4rem;
+    display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  }
+  .project-card:nth-child(1) .card-title { font-size: 2.2rem; }
+.project-card:nth-child(3) .card-content,
+.project-card:nth-child(4) .card-content {
+  bottom: auto;
+  top: 0;
+}
+
+  .card-genre {
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or-light);
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.35s 0.05s, transform 0.35s 0.05s;
+  }
+  .project-card:hover .card-genre {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .card-cta {
+    position: absolute;
+    top: 1.5rem; right: 1.5rem;
+    width: 44px; height: 44px;
+    border: 1px solid rgba(201,168,76,0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.7);
+    transition: opacity 0.3s, transform 0.3s, background 0.3s;
+  }
+  .card-cta svg { width: 16px; height: 16px; fill: var(--or); }
+  .project-card:hover .card-cta {
+    opacity: 1;
+    transform: scale(1);
+  }
+  .card-cta:hover { background: var(--or); }
+  .card-cta:hover svg { fill: var(--noir); }
+
+  /* ABOUT */
+  .about-section {
+    padding: 8rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6rem;
+    align-items: center;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  .about-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 1.5rem;
+  }
+  .about-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 3rem;
+    font-weight: 300;
+    color: var(--creme);
+    line-height: 1.15;
+    margin-bottom: 2rem;
+  }
+  .about-title em { font-style: italic; color: var(--or-light); }
+  .about-text {
+    font-size: 0.82rem;
+    line-height: 2;
+    color: var(--texte);
+    margin-bottom: 1rem;
+  }
+  .about-school {
+    margin-top: 2rem;
+    padding: 1.25rem;
+    border: 1px solid rgba(201,168,76,0.2);
+    display: inline-block;
+  }
+  .about-school span {
+    display: block;
+    font-size: 0.6rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 0.3rem;
+  }
+  .about-school p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    color: var(--creme);
+  }
+  .about-visual {
+    position: relative;
+  }
+  .about-frame {
+    width: 100%;
+    aspect-ratio: 3/4;
+    background: var(--gris);
+    border: 1px solid rgba(201,168,76,0.15);
+    position: relative;
+    overflow: hidden;
+  }
+  .about-frame::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(135deg, rgba(201,168,76,0.1) 0%, transparent 50%),
+      linear-gradient(45deg, transparent 50%, rgba(201,168,76,0.05) 100%);
+  }
+  .about-frame-label {
+    position: absolute;
+    bottom: 1.5rem; left: 1.5rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    color: var(--or);
+    font-style: italic;
+    font-family: 'Cormorant Garamond', serif;
+  }
+  .about-deco {
+    position: absolute;
+    top: -1rem; right: -1rem;
+    width: 60%;
+    height: 60%;
+    border: 1px solid rgba(201,168,76,0.2);
+    z-index: -1;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    padding: 6rem 4rem;
+    text-align: center;
+    border-top: 1px solid rgba(201,168,76,0.1);
+  }
+  .contact-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 2rem;
+  }
+  .contact-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 7vw, 6rem);
+    font-weight: 300;
+    color: var(--creme);
+    line-height: 1;
+    margin-bottom: 3rem;
+  }
+  .contact-title em { font-style: italic; color: var(--or-light); }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+  }
+  .contact-link {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--texte);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.3s;
+  }
+  .contact-link::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0; right: 0;
+    height: 1px;
+    background: var(--or);
+    transform: scaleX(0);
+    transition: transform 0.3s;
+  }
+  .contact-link:hover { color: var(--or); }
+  .contact-link:hover::after { transform: scaleX(1); }
+
+  /* FOOTER */
+  footer {
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid rgba(201,168,76,0.08);
+  }
+  footer p {
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: rgba(212,201,176,0.4);
+  }
+  footer span { color: var(--or); }
+
+  /* PAGE PROJET */
+  .project-page {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: var(--noir);
+    z-index: 500;
+    overflow-y: auto;
+    opacity: 0;
+    transition: opacity 0.5s;
+  }
+  .project-page.active {
+    display: block;
+  }
+  .project-page.visible {
+    opacity: 1;
+  }
+
+  .pp-back {
+    position: fixed;
+    top: 2rem; left: 4rem;
+    z-index: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--texte);
+    cursor: none;
+    text-decoration: none;
+    transition: color 0.3s;
+    background: none; border: none;
+  }
+  .pp-back:hover { color: var(--or); }
+  .pp-back-line {
+    width: 30px; height: 1px;
+    background: currentColor;
+    transition: width 0.3s;
+  }
+  .pp-back:hover .pp-back-line { width: 50px; }
+
+  .pp-hero {
+    width: 100%;
+    aspect-ratio: 16/7;
+    background: var(--gris);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pp-hero-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.4;
+    filter: blur(2px);
+  }
+  .pp-hero-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(10,9,8,0.4), rgba(10,9,8,0.85));
+  }
+  .pp-hero-title {
+    position: relative;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(3rem, 8vw, 7rem);
+    font-weight: 300;
+    color: var(--creme);
+    text-align: center;
+    line-height: 1;
+  }
+  .pp-hero-title em { color: var(--or-light); font-style: italic; }
+
+  .pp-video-wrap {
+    max-width: 900px;
+    margin: -3rem auto 0;
+    position: relative;
+    z-index: 2;
+    padding: 0 2rem;
+  }
+  .pp-video {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: #000;
+    border: 1px solid rgba(201,168,76,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .pp-video iframe {
+    width: 100%; height: 100%; border: none;
+  }
+  .pp-video-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    color: rgba(212,201,176,0.4);
+  }
+  .pp-video-placeholder svg { width: 48px; height: 48px; opacity: 0.5; }
+  .pp-video-placeholder p { font-size: 0.7rem; letter-spacing: 0.15em; }
+
+  .pp-content {
+    max-width: 900px;
+    margin: 4rem auto;
+    padding: 0 2rem;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 4rem;
+  }
+  .pp-desc-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 1.25rem;
+  }
+  .pp-desc-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 300;
+    color: var(--creme);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+  }
+  .pp-desc-text {
+    font-size: 0.82rem;
+    line-height: 2.1;
+    color: var(--texte);
+  }
+
+  .pp-credits {
+    border-left: 1px solid rgba(201,168,76,0.2);
+    padding-left: 2rem;
+  }
+  .pp-credits-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--or);
+    margin-bottom: 1.5rem;
+  }
+  .credit-item {
+    margin-bottom: 1.25rem;
+  }
+  .credit-role {
+    font-size: 0.58rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--or-light);
+    margin-bottom: 0.2rem;
+  }
+  .credit-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--creme);
+  }
+
+  /* ANIMATIONS */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.5; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  /* RESPONSIF */
+  @media (max-width: 900px) {
+    nav { padding: 1.5rem 2rem; }
+    .hero { padding: 0 2rem 5rem; }
+    .projects-grid { padding: 0 2rem; gap: 10px; }
+    .projects-grid {
+      grid-template-columns: 1fr 1fr;
+      grid-auto-rows: auto;
+    }
+    .project-card:nth-child(1) { grid-column: 1 / 3; grid-row: auto; aspect-ratio: 16/9; }
+    .project-card:nth-child(2) { grid-column: 1 / 3; grid-row: auto; aspect-ratio: 16/9; }
+    .project-card:nth-child(3),
+    .project-card:nth-child(4),
+    .project-card:nth-child(5) { grid-column: span 1; grid-row: auto; aspect-ratio: 4/5; }
+    .project-card:nth-child(6) { grid-column: 1 / 3; grid-row: auto; aspect-ratio: 16/9; }
+    .about-section { grid-template-columns: 1fr; padding: 4rem 2rem; }
+    .about-visual { display: none; }
+    .contact-section { padding: 4rem 2rem; }
+    footer { padding: 2rem; }
+    .section-header { padding: 0 2rem; }
+    .pp-content { grid-template-columns: 1fr; }
+    .pp-credits { border-left: none; padding-left: 0; border-top: 1px solid rgba(201,168,76,0.2); padding-top: 2rem; }
+    .pp-back { left: 2rem; }
+  }
+</style>
+
+<style id="image-layout-fix">
+.about-section{display:grid;grid-template-columns:1.05fr 0.95fr;gap:2rem;align-items:start;}
+.formation-section{display:grid;grid-template-columns:1.05fr 0.95fr;gap:2rem;align-items:start;}
+.about-media,.formation-media{width:100%;align-self:start;}
+.about-media img,.formation-media img{width:100%;height:auto;display:block;visibility:visible;opacity:1;max-height:none;}
+</style>
+<style id="img-fallback">.about-media,.formation-media{min-height:220px;border:1px solid rgba(201,168,76,.35);background:rgba(255,255,255,.02)} .about-media::before,.formation-media::before{content:'Image';display:block;color:var(--or-light);padding:1rem;font-family:inherit;opacity:.6} </style>
+
+
+</head>
+<body>
+
+
+</div>
+
+</div>
+
+
+<!-- CURSEUR -->
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+
+<!-- NAVIGATION -->
+<nav>
+  <a href="#" class="nav-logo" onclick="goHome()" style="font-family:'Snell Roundhand','SnellRoundhand','Great Vibes',cursive;font-size:1.6rem;font-style:italic;font-weight:400;letter-spacing:0.02em;color:var(--or-light);">Naomi Kalala</a><div id="portfolio-fixed-overlay" style="position:fixed;left:50%;top:150px;transform:translateX(-50%);font-family:'Snell Roundhand','SnellRoundhand','Great Vibes',cursive;font-style:italic;font-size:8rem;line-height:1;color:var(--or-light);pointer-events:none;white-space:nowrap;z-index:50;">Portfolio</div>
+  <ul class="nav-links">
+    <li><a href="#about">À propos de moi</a></li>
+    <li><a href="#formation">Formation</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE PRINCIPALE -->
+<div id="main-page">
+
+  <!-- HERO -->
+  <section class="hero" id="home">
+    <div class="hero-bg"></div>
+    <div class="hero-line"></div>
+    <p class="hero-subtitle">Réalisatrice — Monteuse</p>
+    <h2 class="hero-title" style="font-size:clamp(2.5rem,7vw,6rem);">Créer,<br><em>Raconter,</em><br>Émouvoir.</h2>
+    <div class="hero-scroll">
+      <span></span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- À PROPOS -->
+  <section class="about-section" id="about" style="padding-top:3rem;">
+    <div class="about-text-col">
+      <p class="about-label">01 — À propos de moi</p>
+      <h2 style="font-family:'Snell Roundhand','SnellRoundhand','Great Vibes',cursive;font-size:72px;font-weight:400;font-style:italic;color:var(--or-light);line-height:1.1;margin-bottom:1.5rem;">Naomi Kalala</h2>
+      <p class="about-text">Actuellement en Bachelor réalisateur monteur, je débute dans le domaine de la réalisation de vidéos et maîtrise le montage vidéo ainsi que le motion design avec After Effects.</p>
+      <p class="about-text">Je suis particulièrement attirée par la narration non-linéaire, les ambiances visuelles construites autour de la lumière naturelle, et la musique comme architecture du récit.</p>
+    </div>
+    <div class="about-visual">
+      <div class="about-deco"></div>
+      <div class="about-frame" style="background-image:url('aproposdemoi.webp');background-size:cover;background-position:center top;">
+        <p class="about-frame-label">« L'image est le silence qui parle »</p>
+      </div>
+    </div>
+  </section>
+
+  
+  <!-- FORMATION -->
+  <section class="about-section" id="formation" style="border-top:1px solid rgba(201,168,76,0.1);padding-top:5rem;padding-bottom:5rem;">
+    <div class="about-text-col">
+      <p class="about-label">02 — Formation</p>
+      <h2 class="about-title">Un parcours<br>tourné vers <em>l'image</em></h2>
+      <div style="display:flex;flex-direction:column;gap:1rem;margin-top:1.5rem;">
+        <div class="about-school">
+          <span>2025 — 2026</span>
+          <p>Bachelor Réalisateur Monteur · 1ère année</p>
+          <p style="font-size:0.75rem;color:var(--texte);margin-top:0.2rem;">Studio M · Villeurbanne</p>
+        </div>
+        <div class="about-school">
+          <span>2023</span>
+          <p>Licence Droit et Sciences Politiques</p>
+          <p style="font-size:0.75rem;color:var(--texte);margin-top:0.2rem;">Université Nice Côte d'Azur · Nice</p>
+        </div>
+        <div class="about-school">
+          <span>2019</span>
+          <p>Baccalauréat Littéraire</p>
+          <p style="font-size:0.75rem;color:var(--texte);margin-top:0.2rem;">Lycée Albert Calmette · Nice</p>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual">
+      <div class="about-deco"></div>
+      <div class="about-frame" style="background:none;border:none;display:block;min-height:400px;width:100%;padding:0;">
+    <img src="formation.webp" style="width:100%;height:100%;object-fit:contain;object-position:center top;">
+</div>
+    </div>
+  </section>
+
+  
+
+  <!-- PROJETS -->
+  <section class="projects-section" id="projects">
+    <div class="section-header">
+      <span class="section-label">03</span>
+      <h2 class="section-title">Mes Projets</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="projects-grid" id="projects-grid">
+      <!-- Rempli dynamiquement par JS -->
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="contact">
+    <p class="contact-label">04 — Contact</p>
+    <h2 class="contact-title">Travaillons<br><em>ensemble</em></h2>
+    <div class="contact-links">
+      <a href="mailto:naomikalala94@gmail.com" class="contact-link">naomikalala94@gmail.com</a>
+      <a href="tel:+33769671020" class="contact-link">07 69 67 10 20</a>
+      <a href="https://www.linkedin.com/in/naomi-kalala-b300a43a0/?locale=fr" target="_blank" class="contact-link">LinkedIn</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2026 — Portfolio <span>Réalisatrice Monteuse</span></p>
+    <p>Naomi Kalala</p>
+  </footer>
+
+</div>
+
+<!-- PAGE PROJET (overlay) -->
+<div class="project-page" id="project-page">
+  <button class="pp-back" onclick="closeProject()">
+    <div class="pp-back-line"></div>
+    <span>Retour</span>
+  </button>
+
+  <div class="pp-hero" id="pp-hero">
+    <div class="pp-hero-bg" id="pp-hero-bg"></div>
+    <div class="pp-hero-overlay"></div>
+    <h1 class="pp-hero-title" id="pp-title"></h1>
+  </div>
+
+  <div class="pp-video-wrap">
+    <div class="pp-video" id="pp-video">
+      <div class="pp-video-placeholder">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+        <p>Vidéo à intégrer</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pp-content">
+    <div class="pp-main">
+      <p class="pp-desc-label" id="pp-genre"></p>
+      <h2 class="pp-desc-title" id="pp-subtitle"></h2>
+      <p class="pp-desc-text" id="pp-desc"></p>
+    </div>
+    <div class="pp-credits">
+      <p class="pp-credits-label">Crédits</p>
+      <div id="pp-credits-list"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════
+   DONNÉES PROJETS — MODIFIEZ ICI
+═══════════════════════════════════════════════ */
+const PROJECTS = [
+  {
+    id: "leveil",
+    title: "L'ÉVEIL",
+    titleHtml: "L'<em>Éveil</em>",
+    genre: "Court-métrage · Science-Fiction",
+    subtitle: "Un instant sans surveillance, un choix qui changera tout",
+    description: "Dans un futur dystopique, deux employées immatriculées travaillent dans un bureau entièrement contrôlé par une voix et des caméras.Quand une coupure de courant fait taire le système, un contact interdit fait naître un doute, puis un choix. Ce court-métrage de fiction co-écrit et co-réalisé dans le cadre d’un projet d’école collectif, réunissant toutes les sections de l’audiovisuel. Il s’agit pour moi avec ce projet d’un premier terrain d’expérimentation sur la direction d’acteurs, la mise en scène et la narration visuelle.",
+    videoUrl: "https://drive.google.com/file/d/13JdUM81XLnvomlwroOCRoKfsgpjd-swp/preview", 
+    thumbnail: "affiche-court-metrage.webp",
+    "Mes rôles": [
+      { role: "Chargée de production", name: "" },
+      { role: "Co-réalisatrice", name: "" },
+      { role: "Scénariste", name: "" },
+      { role: "Durée", name: "4 min" },
+      { role: "Année", name: "2025" },
+    ]
+  },
+  {
+    id: "découvreteaville-croixrousse",
+    title: "Découvre ta ville : Croix-Rousse",
+    titleHtml: "Découvre ta ville  <em>:Croix-Rousse</em>",
+    genre: "Reportage",
+    description: "Il s’agit dans le cadre d’un workshop d’un mini reportage de terrain, explorant le lien entre les habitants et leur environnement urbain. De la conception au montage, j’ai pu avoir une maîtrise complète de la chaîne de production documentaire.Tourné sur une semaine, le film a été réalisé avec deux caméras GH5, des Amaran 100C, un Pico Gear pour les interviews et un kit perche son pour capter les ambiances de la ville. Il s’agissait d’un premier exercice de prise de vue, encadré par les enseignants, avec un travail mené en autonomie sur le repérage des lieux et la recherche des intervenants pour les interviews.",
+    videoUrl: "https://drive.google.com/file/d/1JbMdMivYk7xBWAVxxzBdeVzlDOOozdeu/preview",
+    thumbnail: "decouvretaville.webp",
+    "Mes rôles": [
+      { role: "Scénariste", name: "" },
+      { role: "Cadreuse", name: "" },
+      { role: "Monteuse", name: "" },
+      { role: "Durée", name: "4min" },
+      { role: "Année", name: "2025" },
+    ]
+  },
+  {
+    id: "Upcycling-bocaldedécorationpourrangervotrecuisine",
+    title: "Upcycling bocal de décoration pour ranger votre cuisine",
+    titleHtml: "Upcycling<em>bocal de décoration pour ranger votre cuisine </em>",
+    genre: "Tutoriel",
+    description: "Vidéo tutoriel conçue et réalisée de A à Z dans le cadre d’un exercice audiovisuel. Pensée comme un travail de clarté narrative et de rythme visuel, elle repose sur une construction précise de chaque plan afin de maintenir l’attention du spectateur.Le projet a mobilisé une semaine d’élaboration en amont, consacrée à l’écriture du scénario, au découpage technique, à la recherche d’intervenant, à la réflexion sur les décors et au choix des lieux de tournage. Le tournage s’est déroulé sur deux jours, avant une semaine entière dédiée à la postproduction.",
+    videoUrl: "https://drive.google.com/file/d/1QQFBcUjBmbE5r8vOU0GaTUtjFgEpBK0Z/preview",
+    thumbnail: "PROJET-TUTO.webp",
+    "Mes rôles": [
+      { role: "Assistante réalisatrice", name: "" },
+      { role: "Opératrice prise de son", name: "" },
+      { role: "Monteuse", name: "" },
+      { role: "Durée", name: "3min" },
+      { role: "Année", name: "2026" },
+    ]
+  },
+  {
+    id: "friocup",
+    title: "FrioCup",
+    titleHtml: "Frio <em>Cup</em>",
+    genre: "Publicité",
+    subtitle: "Quelques degrés peuvent tout changer",
+    description: "Publicité réalisée dans le cadre d’une mise en situation de commande client, avec un produit imposé à valoriser. Pensé pour maximiser l’impact visuel et narratif, le projet a été mené en une semaine : préparation du scénario, de l’intervenant et du lieu, tournage sur une journée, puis un jour et demi de postproduction. Le film a été tourné en log avec une Blackmagic, trois Amaran 150c et un kit perche pour la prise de son orientée vers les ambiances et les détails sonores du quotidien.",
+    videoUrl: "https://drive.google.com/file/d/1gzMl1YTRiqIzLyBDETJyWKSF0fKCC6S_/preview",
+    thumbnail: "friocup.webp",
+    "Mes rôles": [
+      { role: "Scénariste", name: "" },
+      { role: "Opératrice prise de son", name: "" },
+      { role: "Durée", name: "1min16" },
+      { role: "Année", name: "2026" },
+    ]
+  },
+  {
+    id: "mon-amour",
+    title: "Mon Amour-WALLACE",
+    titleHtml: "Mon <em>amour</em>",
+    genre: "Clip · Vidéo musicale",
+    description: "Clip réalisé en groupe dans le cadre d’un workshop encadré, à partir d’un artiste imposé, pour lequel nous devions concevoir un scénario en cohérence avec sa direction artistique. J’ai participé à l’ensemble du processus de création, de l’écriture à la réalisation, en contribuant notamment au développement du scénario, à la recherche de figurants et d’un acteur via des fiches de casting, ainsi qu’à la conception des décors.J’ai également pris part à la prise d’image et au montage, incluant un travail d’incrustations réalisé sur After Effects, ce qui m’a permis de renforcer mes compétences techniques tout en m’inscrivant dans une dynamique de création collective.",
+    videoUrl: "https://drive.google.com/file/d/1ofAnJFAS79Z2tdRZJn7pji7EaaO6qiYf/preview",
+    thumbnail: "mon-amour.webp",
+    "Mes rôles": [
+      { role: "Scénariste", name: "" },
+      { role: "Cadreuse", name: "" },
+      { role: "Monteuse", name: "" },
+      { role: "Durée", name: " 3min " },
+      { role: "Année", name: "2026" },
+    ]
+  },
+  {
+    id: "pxie-prolights",
+    title: "PIXIE PROLIGHTS ",
+    titleHtml: "Pixie <em>prolights</em>",
+    genre: "Publicité",
+    subtitle: "Transmettez plus que de la lumière",
+    description: "Publicité réalisée en totale autonomie dans le cadre d’un projet scolaire, autour d’un projecteur imposé, dont j’ai pu sélectionner le modèle : la lyre Pixie Prolights. De la conception à la post-production, j’ai pris en charge l’ensemble du processus, incluant l’écriture, le tournage, le montage, ainsi que la recherche des lieux et des comédiens.Ce projet représente un véritable exercice de polyvalence et d’adaptation, m’ayant permis de gérer seul toutes les contraintes de production tout en développant une approche créative cohérente autour du produit.",
+    videoUrl: "https://drive.google.com/file/d/1YRJ5LlvKz4U3qR-Z9D2-rQW65swBBzua/preview",
+    thumbnail: "pixie.webp",
+    "Mes rôles": [
+      { role: "Réalisatrice", name: "" },
+      { role: "Scénariste", name: "" },
+      { role: "Cadreuse", name: "" },
+      { role: "Monteuse", name: "" },
+      { role: "Durée", name: "1min44" },
+      { role: "Année", name: "2026" },
+    ]
+  }
+];
+/* ═══════════════════════════════════════════════ */
+
+// Curseur personnalisé
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+let mx = 0, my = 0, rx = 0, ry = 0;
+
+document.addEventListener('mousemove', e => {
+  mx = e.clientX; my = e.clientY;
+  cursor.style.left = mx + 'px';
+  cursor.style.top = my + 'px';
+});
+
+function animRing() {
+  rx += (mx - rx) * 0.15;
+  ry += (my - ry) * 0.15;
+  ring.style.left = rx + 'px';
+  ring.style.top = ry + 'px';
+  requestAnimationFrame(animRing);
+}
+animRing();
+// Effet Portfolio overlay
+const overlay = document.getElementById('portfolio-fixed-overlay');
+window.addEventListener('scroll', () => {
+  const opacity = Math.max(0, 1 - window.scrollY / 300);
+  overlay.style.opacity = opacity;
+});
+
+document.querySelectorAll('a, button, .project-card').forEach(el => {
+  el.addEventListener('mouseenter', () => ring.classList.add('cursor-hover'));
+  el.addEventListener('mouseleave', () => ring.classList.remove('cursor-hover'));
+});
+
+// Génération de la grille
+function renderGrid() {
+  const grid = document.getElementById('projects-grid');
+  grid.innerHTML = '';
+  PROJECTS.forEach((p, i) => {
+    const card = document.createElement('div');
+    card.className = 'project-card';
+    card.innerHTML = `
+      <div class="card-bg" style="background-image: url('${p.thumbnail}')"></div>
+      <div class="card-overlay"></div>
+      <div class="card-content">
+        <p class="card-num">0${i+1}</p>
+        <h3 class="card-title">${p.title}</h3>
+        <p class="card-genre">${p.genre}</p>
+      </div>
+      <div class="card-cta">
+        <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </div>`;
+    card.addEventListener('click', () => openProject(p));
+    grid.appendChild(card);
+  });
+
+  // Réattacher curseur hover
+  document.querySelectorAll('.project-card').forEach(el => {
+    el.addEventListener('mouseenter', () => ring.classList.add('cursor-hover'));
+    el.addEventListener('mouseleave', () => ring.classList.remove('cursor-hover'));
+  });
+}
+
+// Ouverture page projet
+function openProject(p) {
+  const page = document.getElementById('project-page');
+  document.getElementById('pp-title').innerHTML = p.titleHtml;
+  document.getElementById('pp-hero-bg').style.backgroundImage = `url('${p.thumbnail}')`;
+  document.getElementById('pp-genre').textContent = p.genre;
+  document.getElementById('pp-subtitle').textContent = p.subtitle;
+  document.getElementById('pp-desc').textContent = p.description;
+
+  // Vidéo
+  const videoEl = document.getElementById('pp-video');
+  if (p.videoUrl) {
+    videoEl.innerHTML = `<iframe src="${p.videoUrl}" allowfullscreen allow="autoplay; fullscreen"></iframe>`;
+  } else {
+    videoEl.innerHTML = `<div class="pp-video-placeholder">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+      <p>Vidéo à intégrer — ajoutez l'URL embed dans PROJECTS</p>
+    </div>`;
+  }
+
+  // Crédits
+  const creditsList = document.getElementById('pp-credits-list');
+  creditsList.innerHTML = p ["Mes rôles"].map(c => `
+    <div class="credit-item">
+      <p class="credit-role">${c.role}</p>
+      <p class="credit-name">${c.name}</p>
+    </div>`).join('');
+
+  page.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => page.classList.add('visible'));
+  });
+  page.scrollTop = 0;
+}
+
+function closeProject() {
+  const page = document.getElementById('project-page');
+  page.classList.remove('visible');
+  setTimeout(() => {
+    page.classList.remove('active');
+    document.body.style.overflow = '';
+  }, 500);
+}
+
+function goHome() {
+  closeProject();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Touche Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeProject();
+});
+
+renderGrid();
+</script>
+</body>
+</html>
